@@ -6,8 +6,17 @@ var util      = require("util");
 var settings  = require('../../settings');
 var expValidate  = require('express-validator');
 
-exports.getList = function (req, res) {
-	db.executeSql("SELECT TOP(10) [Member Id] as memberId, First_Name as firstName, Last_Name as lastName, email FROM Main", function(data, err) {
+exports.getList = function (req, res, page) {
+	var offset = 0;                            // start row
+	var fetch = settings.defaultSearchLimit;   // items per page
+	var sql = settings.memberSql;
+
+	if(page){
+		offset = (page - 1) * fetch;
+	}
+
+	sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + fetch + " ROWS ONLY";
+	db.executeSql(sql, function(data, err) {
 		if(err){
 			httpMsgs.show500(req, res, err);
 		} else {
