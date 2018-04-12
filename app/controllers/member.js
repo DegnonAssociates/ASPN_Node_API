@@ -2,38 +2,38 @@ var db = require("../../core/db");
 var httpMsgs = require("../../core/httpMsgs");
 var util = require("util");
 
-exports.getList = function (req, resp) {
-	db.executeSql("SELECT TOP(10) First_Name, Last_Name, Email FROM Main", function(data, err) {
+exports.getList = function (req, res) {
+	db.executeSql("SELECT TOP(10) [Member Id] as memberId, First_Name as firstName, Last_Name as lastName, email FROM Main", function(data, err) {
 		if(err){
-			httpMsgs.show500(req, resp, err);
+			httpMsgs.show500(req, res, err);
 		} else {
-			httpMsgs.sendJson(req, resp, data);
+			httpMsgs.sendJson(req, res, data);
 		}
 	});
 };
 
-exports.get = function (req, resp, memId) {
-	db.executeSql("SELECT TOP(10) First_Name, Last_Name, Email FROM Main WHERE [Member Id] = " + memId, function(data, err) {
+exports.get = function (req, res, memberId) {
+	db.executeSql("SELECT [Member Id] as memberId, First_Name as firstName, Last_Name as lastName, email FROM Main WHERE [Member Id] = " + memberId, function(data, err) {
 		if(err){
-			httpMsgs.show500(req, resp, err);
+			httpMsgs.show500(req, res, err);
 		} else {
-			httpMsgs.sendJson(req, resp, data);
+			httpMsgs.sendJson(req, res, data);
 		}
 	});
 };
 
-exports.add = function (req, resp, reqBody) {
+exports.add = function (req, res) {
 	try {
-		if(!reqBody) throw new Error("Input not valid");
-		var data = JSON.parse(reqBody);
+		if(!req.body) throw new Error("Input not valid");
+		var data = req.body;
 		if (data) {
 			var sql = "INSERT INTO Main (First_Name, Last_Name, email) VALUES ";
 			sql += util.format("('%s', '%s', '%s')", data.firstName, data.lastName, data.email);
 			db.executeSql(sql, function (data, err) {
 				if (err) {
-					httpMsgs.show500(req, resp, err);
+					httpMsgs.show500(req, res, err);
 				} else {
-					httpMsgs.send200;
+					httpMsgs.send200(req, res);
 				}
 			});
 		}
@@ -42,17 +42,18 @@ exports.add = function (req, resp, reqBody) {
 		}
 	}
 	catch (ex) {
-		httpMsgs.show500(req, resp, ex);
+		httpMsgs.show500(req, res, ex);
 	}
 };
 
-exports.update = function (req, resp, reqBody) {
+exports.update = function (req, res) {
 	try {
-		if(!reqBody) throw new Error("Input not valid");
-		var data = JSON.parse(reqBody);
+		if(!req.body) throw new Error("Input not valid");
+		var data = req.body;
+
 		if (data) {
 
-			if(!data.memId) throw new Error("memId not provided");
+			if(!data.memberId) throw new Error("memberId not provided");
 
 			var sql = "UPDATE Main SET";
 
@@ -72,14 +73,20 @@ exports.update = function (req, resp, reqBody) {
 				isDataProvided = true;
 			}
 
+			if(data.updated) {
+				sql += " Updated = '" + data.updated + "',";
+				isDataProvided = true;
+			}
+
 			sql = sql.slice(0, -1); //remove last comma
-			sql += "WHERE [member id] = " + data.memId;
+			sql += "WHERE [member id] = " + data.memberId;
+
 
 			db.executeSql(sql, function (data, err) {
 				if (err) {
-					httpMsgs.show500(req, resp, err);
+					httpMsgs.show500(req, res, err);
 				} else {
-					httpMsgs.send200;
+					httpMsgs.send200(req, res);
 				}
 			});
 		}
@@ -88,27 +95,27 @@ exports.update = function (req, resp, reqBody) {
 		}
 	}
 	catch (ex) {
-		httpMsgs.show500(req, resp, ex);
+		httpMsgs.show500(req, res, ex);
 	}
 };
 
-exports.delete = function (req, resp, reqBody) {
+exports.delete = function (req, res) {
 	try {
-		if(!reqBody) throw new Error("Input not valid");
-		var data = JSON.parse(reqBody);
+		if(!req.body) throw new Error("Input not valid");
+		var data = req.body;
 		if (data) {
 
-			if(!data.memId) throw new Error("memId not provided");
+			if(!data.memberId) throw new Error("memberId not provided");
 
 			var sql = "DELETE FROM Main";
 			
-			sql += "WHERE [member id] = " + data.memId;
+			sql += "WHERE [member id] = " + data.memberId;
 
 			db.executeSql(sql, function (data, err) {
 				if (err) {
-					httpMsgs.show500(req, resp, err);
+					httpMsgs.show500(req, res, err);
 				} else {
-					httpMsgs.send200;
+					httpMsgs.send200(req, res);
 				}
 			});
 		}
@@ -117,6 +124,6 @@ exports.delete = function (req, resp, reqBody) {
 		}
 	}
 	catch (ex) {
-		httpMsgs.show500(req, resp, ex);
+		httpMsgs.show500(req, res, ex);
 	}
 };

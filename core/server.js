@@ -10,11 +10,12 @@ var bodyParser = require('body-parser');
 var settings   = require('../settings');
 var db         = require('../core/db');
 var member     = require('../app/controllers/member');
+var httpMsgs   = require('../core/httpMsgs');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/json' }));
 
 var port = process.env.PORT || settings.webPort;        // set our port
 
@@ -27,10 +28,33 @@ router.get('/', function(req, res) {
     res.json({ message: 'Degnon Associates Member Interface API' });   
 });
 
-// more routes for our API will happen here
+// member GET all POST routes
 router.route('/members')
 	.get(function (req, res) {
 		member.getList(req, res);
+	})
+	.post(function (req, res) { 
+		member.add(req, res);
+	});
+
+// member GET one PUT DELETE routes
+router.route('/members/:memberId')
+	.get(function (req, res) { 
+		var memIdPatt = "[0-9]+";
+		var patt = new RegExp("/members/" + memIdPatt);
+		if (patt.test(req.url)) {
+			patt = new RegExp(memIdPatt);
+			var memberId = patt.exec(req.url);
+			member.get(req, res, memberId);
+		} else {
+			httpMsgs.show404(req, res);
+		}
+	})
+	.put(function (req, res) {
+		member.update(req, res);
+	})
+	.delete(function (req, res) {
+		member.delete(req, res);
 	});
 
 
