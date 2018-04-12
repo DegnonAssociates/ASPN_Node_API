@@ -4,22 +4,24 @@
 // =============================================================================
 
 // call the packages we need
-var express      = require('express');        // call express
-var app          = express();                 // define our app using express
-var bodyParser   = require('body-parser');
-var morgan       = require('morgan');
-var jwt          = require('jsonwebtoken');
-var settings     = require('../settings');
-var db           = require('../core/db');
-var httpMsgs     = require('../core/httpMsgs');
-var member       = require('../app/controllers/member');
-var authn       = require('../app/controllers/authenticate');
+var express           = require('express');        // call express
+var app               = express();                 // define our app using express
+var bodyParser        = require('body-parser');
+var expressValidator  = require('express-validator');
+var morgan            = require('morgan');
+var jwt               = require('jsonwebtoken');
+var settings          = require('../settings');
+var db                = require('../core/db');
+var httpMsgs          = require('../core/httpMsgs');
+var member            = require('../app/controllers/member');
+var authn             = require('../app/controllers/authenticate');
 
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/json' }));
+app.use(expressValidator());
 app.use(morgan('dev'));
 
 var port = process.env.PORT || settings.webPort;        // set our port
