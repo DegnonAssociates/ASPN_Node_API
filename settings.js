@@ -8,3 +8,7 @@ exports.dbConfig = {
 
 exports.webPort = 3000;
 exports.httpMsgsFormat = "JSON";
+
+exports.memberSql = "SELECT [Member ID] as memberId, First_Name as firstName, Last_Name as lastName, email, webAccess FROM Main ";
+
+exports.secret = "5FDF19D7-EC51-4FE6-AAA1-E10B729BFF09";

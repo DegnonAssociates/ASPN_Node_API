@@ -60,6 +60,46 @@ exports.show413 = function(req, res) {
 	res.end();
 };
 
+
+exports.show401 = function(req, res) {
+	if (settings.httpMsgsFormat === "HTML") {
+		res.writeHead(401, "Unauthorized", {"Content-Type":"text/html"} );
+		res.write("<html><head><title>401</title></head><body>401: Unauthorized</body></html>");
+	}
+	else {
+		res.writeHead(401, "Unauthorized", {"Content-Type":"application/json"} );
+		res.write(JSON.stringify({ data: "Unauthorized" }));
+	}
+
+	res.end();
+};
+
+exports.show400 = function(req, res) {
+	if (settings.httpMsgsFormat === "HTML") {
+		res.writeHead(400, "Bad Request", {"Content-Type":"text/html"} );
+		res.write("<html><head><title>400</title></head><body>400: Bad Request</body></html>");
+	}
+	else {
+		res.writeHead(400, "Bad Request", {"Content-Type":"application/json"} );
+		res.write(JSON.stringify({ data: "Bad Request" }));
+	}
+
+	res.end();
+};
+
+exports.show403 = function(req, res) {
+	if (settings.httpMsgsFormat === "HTML") {
+		res.writeHead(403, "Forbidden", {"Content-Type":"text/html"} );
+		res.write("<html><head><title>403</title></head><body>403: Forbidden</body></html>");
+	}
+	else {
+		res.writeHead(403, "Forbidden", {"Content-Type":"application/json"} );
+		res.write(JSON.stringify({ data: "Forbidden" }));
+	}
+
+	res.end();
+};
+
 exports.send200 = function(req, res) {	
 	res.writeHead(200, {"Content-Type":"application/json"} );
 	res.end();

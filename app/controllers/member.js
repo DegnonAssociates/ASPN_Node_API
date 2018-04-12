@@ -1,6 +1,9 @@
-var db = require("../../core/db");
-var httpMsgs = require("../../core/httpMsgs");
-var util = require("util");
+// member.js
+
+var db        = require("../../core/db");
+var httpMsgs  = require("../../core/httpMsgs");
+var util      = require("util");
+var settings  = require('../../settings');
 
 exports.getList = function (req, res) {
 	db.executeSql("SELECT TOP(10) [Member Id] as memberId, First_Name as firstName, Last_Name as lastName, email FROM Main", function(data, err) {
@@ -13,7 +16,10 @@ exports.getList = function (req, res) {
 };
 
 exports.get = function (req, res, memberId) {
-	db.executeSql("SELECT [Member Id] as memberId, First_Name as firstName, Last_Name as lastName, email FROM Main WHERE [Member Id] = " + memberId, function(data, err) {
+	var sql = settings.memberSql;
+	sql += "WHERE [Member Id] = " + memberId;
+	
+	db.executeSql(sql, function(data, err) {
 		if(err){
 			httpMsgs.show500(req, res, err);
 		} else {
