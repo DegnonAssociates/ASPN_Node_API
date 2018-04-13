@@ -1,26 +1,40 @@
 // member.js
 
 var db        = require("../../core/db");
+var dbHelper  = require("../helpers/dbHelper");
 var httpMsgs  = require("../../core/httpMsgs");
 var util      = require("util");
 var settings  = require('../../settings');
 var expValidate  = require('express-validator');
 
 exports.getList = function (req, res) {
-	var page = parseInt(req.query.page, 10) || 1;  // page number passed in URL query string
-	var fetch  = settings.defaultSearchLimit;      // items per page
-	var offset = (page - 1) * fetch;               // start row
-	
-	var sql = settings.memberSql;
+	try {
+		var page = parseInt(req.query.page, 10) || 1;  // page number passed in URL query string
+		var numPerPage  = settings.defaultSearchLimit;      // items per page
+		var offset = (page - 1) * numPerPage;               // start row
+		var numRows = dbHelper.getCount("main");       // number of records in lookup table
+		var numPages = Math.ceil(numRows / numPerPage) // max pages available
 
-	sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + fetch + " ROWS ONLY";
-	db.executeSql(sql, function(data, err) {
-		if(err){
-			httpMsgs.show500(req, res, err);
-		} else {
-			httpMsgs.sendJson(req, res, data);
+		// throw error is page requested is too large
+		if (page > numPages) {
+			throw new Error("Page " + page + " exceeds available limit of " + numPages + " pages");
 		}
-	});
+
+		
+		var sql = settings.memberSql;
+
+		sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
+		db.executeSql(sql, function(data, err) {
+			if(err){
+				httpMsgs.show500(req, res, err);
+			} else {
+				httpMsgs.sendJson(req, res, data);
+			}
+		});
+	}
+	catch (ex) {
+
+	}
 };
 
 exports.get = function (req, res, memberId) {
