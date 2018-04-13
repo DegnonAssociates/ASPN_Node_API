@@ -45,6 +45,7 @@ router.use(function (req, res, next) {
 
 	// check post, url params, or header for token
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+	
 
 	// decode token
 	if (token) {

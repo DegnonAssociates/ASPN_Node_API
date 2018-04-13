@@ -6,14 +6,12 @@ var util      = require("util");
 var settings  = require('../../settings');
 var expValidate  = require('express-validator');
 
-exports.getList = function (req, res, page) {
-	var offset = 0;                            // start row
-	var fetch = settings.defaultSearchLimit;   // items per page
+exports.getList = function (req, res) {
+	var page = parseInt(req.query.page, 10) || 1;  // page number passed in URL query string
+	var fetch  = settings.defaultSearchLimit;      // items per page
+	var offset = (page - 1) * fetch;               // start row
+	
 	var sql = settings.memberSql;
-
-	if(page){
-		offset = (page - 1) * fetch;
-	}
 
 	sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + fetch + " ROWS ONLY";
 	db.executeSql(sql, function(data, err) {
