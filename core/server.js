@@ -14,6 +14,8 @@ var settings          = require('../settings');
 var db                = require('../core/db');
 var httpMsgs          = require('../core/httpMsgs');
 var member            = require('../app/controllers/member');
+var activity          = require('../app/controllers/activity');
+var activityCode      = require('../app/controllers/activityCode');
 var authn             = require('../app/controllers/authenticate');
 
 
@@ -92,6 +94,64 @@ router.use(function (req, res, next) {
 		})
 		.delete(function (req, res) {
 			member.delete(req, res);
+	});
+
+	// activities GET all POST routes
+	router.route('/activities')
+		.get(function (req, res) {
+			activity.getList(req, res);
+		})
+		.post(function (req, res) { 
+			activity.add(req, res);
+	});
+
+	// activities GET one PUT DELETE routes
+	router.route('/activities/:memberId')
+		.get(function (req, res) { 
+			var memIdPatt = "[0-9]+";
+			var patt = new RegExp("/activities/" + memIdPatt);
+			if (patt.test(req.url)) {
+				patt = new RegExp(memIdPatt);
+				var memberId = patt.exec(req.url);
+				activity.get(req, res, memberId);
+			} else {
+				httpMsgs.show404(req, res);
+			}
+		})
+		.put(function (req, res) {
+			activity.update(req, res);
+		})
+		.delete(function (req, res) {
+			activity.delete(req, res);
+	});
+
+	// activityCode GET all POST routes
+	router.route('/activityCodes')
+		.get(function (req, res) {
+			activityCode.getList(req, res);
+		})
+		.post(function (req, res) { 
+			activityCode.add(req, res);
+	});
+
+	// activityCode GET one PUT DELETE routes
+	router.route('/activityCodes/:activityId')
+		.get(function (req, res) { 
+			var activityIdPatt = "[0-9]+";
+			var patt = new RegExp("/activityCode/" + activityIdPatt);
+			if (patt.test(req.url)) {
+				patt = new RegExp(activityIdPatt);
+				var activityId = patt.exec(req.url);
+				activity.get(req, res, activitysId);
+			} else {
+				httpMsgs.show404(req, res);
+			}
+		})
+		.put(function (req, res) {
+			activityCode.update(req, res);
+		})
+		.delete(function (req, res) {
+			activityCode.delete(req, res);
 	});
 });
 

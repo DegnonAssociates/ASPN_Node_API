@@ -12,7 +12,7 @@ exports.getList = function (req, res) {
 
 		var numRows     // number of records in lookup table;
 
-		dbHelper.getCount("main")    // first get records in lookup table
+		dbHelper.getCount("activities")    // first get records in lookup table
 		.then(function(result, err) {
 			if (err) {
 				console.log(err);
@@ -37,7 +37,7 @@ exports.getList = function (req, res) {
 			}
 
 			
-			var sql = settings.memberSql;
+			var sql = settings.activitySql;
 
 			sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
 			db.executeSql(sql, function(data, err) {
@@ -57,7 +57,7 @@ exports.getList = function (req, res) {
 };
 
 exports.get = function (req, res, memberId) {
-	var sql = settings.memberSql;
+	var sql = settings.activitySql;
 	sql += "WHERE [Member Id] = " + memberId;
 
 	db.executeSql(sql, function(data, err) {
@@ -74,8 +74,8 @@ exports.add = function (req, res) {
 		if(!req.body) throw new Error("Input not valid");
 		var data = req.body;
 		if (data) {
-			var sql = "INSERT INTO Main (First_Name, Last_Name, email) VALUES ";
-			sql += util.format("('%s', '%s', '%s')", data.firstName, data.lastName, data.email);
+			var sql = "INSERT INTO Activities ([Member Id], positionCode, TermExp) VALUES ";
+			sql += util.format("(%i, %i, %i)", data.memberId, data.positionCode, data.termExp);
 			db.executeSql(sql, function (data, err) {
 				if (err) {
 					httpMsgs.show500(req, res, err);
@@ -102,26 +102,16 @@ exports.update = function (req, res) {
 
 			if(!data.memberId) throw new Error("memberId not provided");
 
-			var sql = "UPDATE Main SET";
+			var sql = "UPDATE Activities SET";
 
 			var isDataProvided = false;
-			if(data.firstName) {
-				sql += " First_Name = '" + data.firstName + "',";
+			if(data.positionCode) {
+				sql += " positionCode = '" + data.positionCode + "',";
 				isDataProvided = true;
 			}
 
-			if(data.lastName) {
-				sql += " Last_Name = '" + data.lastName + "',";
-				isDataProvided = true;
-			}
-
-			if(data.email) {
-				sql += " Email = '" + data.email + "',";
-				isDataProvided = true;
-			}
-
-			if(data.updated) {
-				sql += " Updated = '" + data.updated + "',";
+			if(data.termExp) {
+				sql += " TermExp = '" + data.termExp + "',";
 				isDataProvided = true;
 			}
 
@@ -153,10 +143,11 @@ exports.delete = function (req, res) {
 		if (data) {
 
 			if(!data.memberId) throw new Error("memberId not provided");
+			if(!data.positionCode) throw new Error("positionCode not provided");
 
-			var sql = "DELETE FROM Main";
+			var sql = "DELETE FROM Activities";
 			
-			sql += "WHERE [member id] = " + data.memberId;
+			sql += "WHERE [member id] = " + data.memberId + " AND positionCode = " + data.positionCode;
 
 			db.executeSql(sql, function (data, err) {
 				if (err) {

@@ -12,7 +12,7 @@ exports.getList = function (req, res) {
 
 		var numRows     // number of records in lookup table;
 
-		dbHelper.getCount("main")    // first get records in lookup table
+		dbHelper.getCount("[Activity Codes]")    // first get records in lookup table
 		.then(function(result, err) {
 			if (err) {
 				console.log(err);
@@ -37,9 +37,9 @@ exports.getList = function (req, res) {
 			}
 
 			
-			var sql = settings.memberSql;
+			var sql = settings.activityCodeSql;
 
-			sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
+			sql += "ORDER BY [PositionCode] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
 			db.executeSql(sql, function(data, err) {
 				if(err){
 					httpMsgs.show500(req, res, err);
@@ -56,9 +56,9 @@ exports.getList = function (req, res) {
 	}
 };
 
-exports.get = function (req, res, memberId) {
-	var sql = settings.memberSql;
-	sql += "WHERE [Member Id] = " + memberId;
+exports.get = function (req, res, activityId) {
+	var sql = settings.activityCodeSql;
+	sql += "WHERE PositionCode = " + activityId;
 
 	db.executeSql(sql, function(data, err) {
 		if(err){
@@ -74,8 +74,10 @@ exports.add = function (req, res) {
 		if(!req.body) throw new Error("Input not valid");
 		var data = req.body;
 		if (data) {
-			var sql = "INSERT INTO Main (First_Name, Last_Name, email) VALUES ";
-			sql += util.format("('%s', '%s', '%s')", data.firstName, data.lastName, data.email);
+			if(!data.activityName) throw new Error("activityName not provided");
+
+			var sql = "INSERT INTO [Activity Codes] (Position) VALUES ";
+			sql += util.format("('%s')", data.activityName);
 			db.executeSql(sql, function (data, err) {
 				if (err) {
 					httpMsgs.show500(req, res, err);
@@ -100,33 +102,20 @@ exports.update = function (req, res) {
 
 		if (data) {
 
-			if(!data.memberId) throw new Error("memberId not provided");
+			if(!data.activityCode) throw new Error("activityCode not provided");
 
-			var sql = "UPDATE Main SET";
+			var sql = "UPDATE [Activity Codes] SET";
 
 			var isDataProvided = false;
-			if(data.firstName) {
-				sql += " First_Name = '" + data.firstName + "',";
-				isDataProvided = true;
-			}
 
-			if(data.lastName) {
-				sql += " Last_Name = '" + data.lastName + "',";
-				isDataProvided = true;
-			}
 
-			if(data.email) {
-				sql += " Email = '" + data.email + "',";
-				isDataProvided = true;
-			}
-
-			if(data.updated) {
-				sql += " Updated = '" + data.updated + "',";
+			if(data.activityName) {
+				sql += " position = '" + data.activityName + "',";
 				isDataProvided = true;
 			}
 
 			sql = sql.slice(0, -1); //remove last comma
-			sql += "WHERE [member id] = " + data.memberId;
+			sql += "WHERE PositionCode = " + data.activityName;
 
 
 			db.executeSql(sql, function (data, err) {
@@ -152,11 +141,11 @@ exports.delete = function (req, res) {
 		var data = req.body;
 		if (data) {
 
-			if(!data.memberId) throw new Error("memberId not provided");
+			if(!data.activityCode) throw new Error("activityCode not provided");
 
-			var sql = "DELETE FROM Main";
+			var sql = "DELETE FROM Activities";
 			
-			sql += "WHERE [member id] = " + data.memberId;
+			sql += "WHERE positionCode = " + data.activityCode;
 
 			db.executeSql(sql, function (data, err) {
 				if (err) {

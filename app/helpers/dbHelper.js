@@ -11,7 +11,6 @@ exports.getCount = function (table) {
 				console.log(err);
 				reject(err);
 			} else {
-				console.log(results[0].numRows);
 				resolve(results[0].numRows);
 			}
 			
