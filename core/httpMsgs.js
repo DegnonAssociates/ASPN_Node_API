@@ -1,3 +1,5 @@
+//httpMsgs.js
+
 var settings = require("../settings");
 
 exports.show500 = function(req, res, err) {

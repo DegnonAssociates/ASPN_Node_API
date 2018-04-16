@@ -1,3 +1,5 @@
+// dbHelper.js
+
 var db = require ("../../core/db");
 var settings = require("../../settings");
 

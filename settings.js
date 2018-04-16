@@ -1,3 +1,5 @@
+// settings.js
+
 exports.dbConfig = {
 	user:     "aspnadmin",
 	password: "aspnadminpwd",

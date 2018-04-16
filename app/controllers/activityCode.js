@@ -1,4 +1,4 @@
-// member.js
+// activityCode.js
 
 var db        = require("../../core/db");
 var dbHelper  = require("../helpers/dbHelper");

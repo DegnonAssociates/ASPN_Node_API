@@ -1,3 +1,5 @@
+// db.js
+
 var sqlDb = require ("mssql");
 var settings = require("../settings");
 
