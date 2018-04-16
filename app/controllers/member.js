@@ -9,31 +9,50 @@ var expValidate  = require('express-validator');
 
 exports.getList = function (req, res) {
 	try {
-		var page = parseInt(req.query.page, 10) || 1;  // page number passed in URL query string
-		var numPerPage  = settings.defaultSearchLimit;      // items per page
-		var offset = (page - 1) * numPerPage;               // start row
-		var numRows = dbHelper.getCount("main");       // number of records in lookup table
-		var numPages = Math.ceil(numRows / numPerPage) // max pages available
 
-		// throw error is page requested is too large
-		if (page > numPages) {
-			throw new Error("Page " + page + " exceeds available limit of " + numPages + " pages");
-		}
+		var numRows     // number of records in lookup table;
 
-		
-		var sql = settings.memberSql;
-
-		sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
-		db.executeSql(sql, function(data, err) {
-			if(err){
-				httpMsgs.show500(req, res, err);
+		dbHelper.getCount("main")    // first get records in lookup table
+		.then(function(result, err) {
+			if (err) {
+				console.log(err);
+				numRows = 0;
 			} else {
-				httpMsgs.sendJson(req, res, data);
+				numRows = result;	
 			}
+			
+		})
+		.then(function () { 
+			var page = parseInt(req.query.page, 10) || 1;  // page number passed in URL query string
+			var numPerPage  = parseInt(settings.defaultSearchLimit);      // items per page
+			var offset = (page - 1) * numPerPage;               // start row			      
+			var numPages = Math.ceil(numRows / numPerPage) // max pages available
+			
+			console.log(" Page: " + page + "\n Num per page: " + numPerPage + "\n NumRows: " + numRows + " \n numPages: " + numPages);			
+		
+			// throw error is page requested is too large
+			if (page > numPages) {
+				var err = ("Page " + page + " exceeds available limit of " + numPages + " pages");
+				httpMsgs.show500(req, res, err);
+			}
+
+			
+			var sql = settings.memberSql;
+
+			sql += "ORDER BY [member id] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
+			db.executeSql(sql, function(data, err) {
+				if(err){
+					httpMsgs.show500(req, res, err);
+				} else {
+					httpMsgs.sendJson(req, res, data);
+				}
+			});
 		});
+		
 	}
 	catch (ex) {
-
+		httpMsgs.show500(req, res, err);
+		console.log(ex);
 	}
 };
 

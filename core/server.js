@@ -24,6 +24,7 @@ app.use(bodyParser.json({ type: 'application/json' }));
 app.use(expressValidator());
 app.use(morgan('dev'));
 
+
 var port = process.env.PORT || settings.webPort;        // set our port
 
 // ROUTES FOR OUR API
