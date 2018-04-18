@@ -34,25 +34,25 @@ exports.getList = function (req, res) {
 			if (page > numPages) {
 				var err = ("Page " + page + " exceeds available limit of " + numPages + " pages");
 				httpMsgs.show500(req, res, err);
+			} else {
+				var sql = settings.activityCodeSql;
+
+				sql += "ORDER BY [PositionCode] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
+				db.executeSql(sql, function(data, err) {
+					if(err){
+						httpMsgs.show500(req, res, err);
+					} else {
+						httpMsgs.sendJson(req, res, data);
+					}
+				});
 			}
-
-			
-			var sql = settings.activityCodeSql;
-
-			sql += "ORDER BY [PositionCode] OFFSET " + offset + " ROWS FETCH NEXT " + numPerPage + " ROWS ONLY";
-			db.executeSql(sql, function(data, err) {
-				if(err){
-					httpMsgs.show500(req, res, err);
-				} else {
-					httpMsgs.sendJson(req, res, data);
-				}
-			});
 		});
 		
 	}
 	catch (ex) {
 		httpMsgs.show500(req, res, err);
 		console.log(ex);
+		
 	}
 };
 

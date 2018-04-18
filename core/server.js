@@ -40,7 +40,7 @@ router.get('/', function(req, res) {
 
 // Authenticate User (POST http://localhost:3000/api/authenticate)
 router.post('/authenticate', function (req, res) {
-	authn.getAuthn(req, res)
+	authn.getAuthn(req, res);
 });
 
 
@@ -63,8 +63,14 @@ router.use(function (req, res, next) {
 			}
 		});
 	} else {
-		// if no token is passed return an error
-		httpMsgs.show403(req, res);
+		if( req.headers['authorization'] ){
+			authn.getAuthn(req, res);
+			next();
+		} else {
+			// if no token or auth is passed return an error
+			httpMsgs.show401(req, res);
+		}
+		
 	}
 
 	// member GET all POST routes
