@@ -5,13 +5,16 @@ var httpMsgs = require("../../core/httpMsgs");
 var util     = require("util");
 var settings = require('../../settings');
 var jwt      = require('jsonwebtoken');
+var isJSON   = require('is-json');
+var aHelper = require("../helpers/assetHelper")
 
 exports.getAuthn = function (req, res) {
+
 	try {
 		if(!req.body && !req.headers['authorization']) throw new Error("Input not valid");
 		var data = req.body;
 
-		if (data.length > 0) {
+		if (!aHelper.isEmptyObject(data)) {
 			var sql = settings.memberSql;
 			sql += util.format("WHERE email = '%s' AND web_password = '%s'", data.username, data.password);
 			
@@ -27,8 +30,8 @@ exports.getAuthn = function (req, res) {
 						// generate and return auth token to client
 						var payload = {};
 						const params = {
-							admin:    data.webAccess,
-							memberId: data.memberId
+							admin:    data[0].webAccess,
+							memberId: data[0].memberId
 						};
 						var token = jwt.sign(params, settings.secret, {
 							expiresIn: 60*24 // 60 * 24 minutes = 1 day
@@ -36,6 +39,8 @@ exports.getAuthn = function (req, res) {
 
 						payload.message="success";
 						payload.token = token;
+						payload.email = data[0].email;
+						payload.display_name = data[0].firstName;
 
 						httpMsgs.sendJson(req, res, payload);
 					}
