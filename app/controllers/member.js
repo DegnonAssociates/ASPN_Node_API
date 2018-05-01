@@ -103,41 +103,54 @@ exports.update = function (req, res) {
 		if (data) {
 
 			if(!data.memberId) throw new Error("memberId not provided");
+			
+			if(data.memberId != req.decoded.memberId && req.decoded.admin != 'Council'){
+				httpMsgs.show401(req, res);
+			} else {	
+				var sql = "UPDATE Main SET";
 
-			var sql = "UPDATE Main SET";
-
-			var isDataProvided = false;
-			if(data.firstName) {
-				sql += " First_Name = '" + data.firstName + "',";
-				isDataProvided = true;
-			}
-
-			if(data.lastName) {
-				sql += " Last_Name = '" + data.lastName + "',";
-				isDataProvided = true;
-			}
-
-			if(data.email) {
-				sql += " Email = '" + data.email + "',";
-				isDataProvided = true;
-			}
-
-			if(data.updated) {
-				sql += " Updated = '" + data.updated + "',";
-				isDataProvided = true;
-			}
-
-			sql = sql.slice(0, -1); //remove last comma
-			sql += "WHERE [member id] = " + data.memberId;
-
-
-			db.executeSql(sql, function (data, err) {
-				if (err) {
-					httpMsgs.show500(req, res, err);
-				} else {
-					httpMsgs.send200(req, res);
+				var isDataProvided = false;
+				if(data.firstName) {
+					sql += " First_Name = '" + data.firstName + "',";
+					isDataProvided = true;
 				}
-			});
+
+				if(data.lastName) {
+					sql += " Last_Name = '" + data.lastName + "',";
+					isDataProvided = true;
+				}
+
+				if(data.email) {
+					sql += " Email = '" + data.email + "',";
+					isDataProvided = true;
+				}
+
+				if(data.updated) {
+					sql += " Updated = '" + data.updated + "',";
+					isDataProvided = true;
+				}
+
+				if(data.password) {
+					sql += " Web_Password = '" + data.password + "',";
+					isDataProvided = true;
+				}
+
+				sql = sql.slice(0, -1); //remove last comma
+				sql += "WHERE [member id] = " + data.memberId;
+				console.log(sql);
+
+				if(isDataProvided){
+					db.executeSql(sql, function (data, err) {
+						if (err) {
+							httpMsgs.show500(req, res, err);
+						} else {
+							httpMsgs.send200(req, res);
+						}
+					});
+				} else{
+					httpMsgs.show400(req, res, ex);
+				}
+			}
 		}
 		else {
 			throw new Error("Input not valid");
@@ -156,17 +169,22 @@ exports.delete = function (req, res) {
 
 			if(!data.memberId) throw new Error("memberId not provided");
 
-			var sql = "DELETE FROM Main";
-			
-			sql += "WHERE [member id] = " + data.memberId;
+			if(data.memberId !== req.decoded.memberId && req.decoded.admin !== 'Council'){
+				httpMsgs.show401(req, res);
+			} else {
 
-			db.executeSql(sql, function (data, err) {
-				if (err) {
-					httpMsgs.show500(req, res, err);
-				} else {
-					httpMsgs.send200(req, res);
-				}
-			});
+				var sql = "DELETE FROM Main";
+				
+				sql += "WHERE [member id] = " + data.memberId;
+
+				db.executeSql(sql, function (data, err) {
+					if (err) {
+						httpMsgs.show500(req, res, err);
+					} else {
+						httpMsgs.send200(req, res);
+					}
+				});
+			}
 		}
 		else {
 			throw new Error("Input not valid");
@@ -176,3 +194,4 @@ exports.delete = function (req, res) {
 		httpMsgs.show500(req, res, ex);
 	}
 };
+

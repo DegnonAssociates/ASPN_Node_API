@@ -17,6 +17,7 @@ var member            = require('../app/controllers/member');
 var activity          = require('../app/controllers/activity');
 var activityCode      = require('../app/controllers/activityCode');
 var authn             = require('../app/controllers/authenticate');
+var reset             = require('../app/controllers/reset');
 
 
 // configure app to use bodyParser()
@@ -41,6 +42,11 @@ router.get('/', function(req, res) {
 // Authenticate User (POST http://localhost:3000/api/authenticate)
 router.post('/authenticate', function (req, res) {
 	authn.getAuthn(req, res);
+});
+
+// Get Reset User Token (POST http://localhost:3000/api/reset)
+router.post('/reset', function (req, res) {
+	reset.getReset(req, res);
 });
 
 
@@ -125,7 +131,7 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
-			activity.update(req, res);
+			activity.update(req, res, memberId);
 		})
 		.delete(function (req, res) {
 			activity.delete(req, res);
