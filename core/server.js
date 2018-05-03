@@ -168,7 +168,6 @@ router.use(function (req, res, next) {
 });
 
 
-
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api/v1', router);
@@ -177,4 +176,5 @@ app.use('/api/v1', router);
 // =============================================================================
 app.listen(port);
 console.log('Started listening at ' + port);
+
 

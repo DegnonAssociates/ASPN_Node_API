@@ -34,7 +34,7 @@ exports.getAuthn = function (req, res) {
 							memberId: data[0].memberId
 						};
 						var token = jwt.sign(params, settings.secret, {
-							expiresIn: 60*24 // 60 * 24 minutes = 1 day
+							expiresIn: 60*24*14 // 60 * 24 minutes * 14 days = 2 weeks
 						});
 
 						payload.message="success";
