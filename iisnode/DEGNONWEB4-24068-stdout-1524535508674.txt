@@ -1,0 +1,2 @@
+Started listening at \\.\pipe\a50d7fb1-6519-44f5-ba8d-bb669cb9a40b
+[0mGET /node_api/ [33m404 [0m5.270 ms - 148[0m

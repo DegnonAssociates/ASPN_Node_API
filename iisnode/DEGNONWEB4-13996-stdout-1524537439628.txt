@@ -1,0 +1,6 @@
+Started listening at \\.\pipe\57d01471-df0d-4c16-a861-cf296e328526
+[0mGET /node_api/ [33m404 [0m10.985 ms - 148[0m
+[0mGET /node_api/indx.html [33m404 [0m1.350 ms - 157[0m
+[0mGET /node_api/index.html [33m404 [0m1.100 ms - 158[0m
+[0mGET /node_api/index.htm [33m404 [0m1.041 ms - 157[0m
+[0mGET /node_api [33m404 [0m1.040 ms - 147[0m

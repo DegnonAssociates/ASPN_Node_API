@@ -1,0 +1,6 @@
+Started listening at \\.\pipe\4875087a-8906-4b32-bf09-b992596eefd4
+[0mGET /node_api/api/v1 [33m404 [0m83.298 ms - 154[0m
+[0mGET /node_api/api/v1/members [33m404 [0m1.124 ms - 162[0m
+[0mGET /node_api/api/v1/members [33m404 [0m1.012 ms - 162[0m
+[0mGET /node_api/api/v1/authenticate [33m404 [0m0.820 ms - 167[0m
+[0mGET /node_api/api/v1/authenticate [33m404 [0m1.047 ms - 167[0m
