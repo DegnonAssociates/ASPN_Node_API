@@ -18,6 +18,7 @@ var activity          = require('../app/controllers/activity');
 var activityCode      = require('../app/controllers/activityCode');
 var authn             = require('../app/controllers/authenticate');
 var reset             = require('../app/controllers/reset');
+var committee         = require('../app/controllers/committee');
 
 
 // configure app to use bodyParser()
@@ -47,6 +48,19 @@ router.post('/authenticate', function (req, res) {
 // Get Reset User Token (POST http://localhost:3000/api/reset)
 router.post('/reset', function (req, res) {
 	reset.getReset(req, res);
+});
+
+// Get Committee list (POST http://localhost:3000/committees)
+router.get('/committees/:committeeId', function (req, res) {
+	var positionCodePatt = "[0-9]+";
+	var patt = new RegExp("/committees/" + positionCodePatt);
+	if (patt.test(req.url)) {
+		patt = new RegExp(positionCodePatt);
+		var positionCode = patt.exec(req.url);
+		committee.get(req, res, positionCode);
+	} else {
+		httpMsgs.show404(req, res);
+	}
 });
 
 
