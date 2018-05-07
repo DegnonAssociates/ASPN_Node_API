@@ -51,7 +51,7 @@ router.post('/reset', function (req, res) {
 });
 
 // Get Committee list (POST http://localhost:3000/committees)
-router.get('/committees/:committeeId', function (req, res) {
+router.get('/committees/:positionCode', function (req, res) {
 	var positionCodePatt = "[0-9]+";
 	var patt = new RegExp("/committees/" + positionCodePatt);
 	if (patt.test(req.url)) {
