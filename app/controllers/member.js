@@ -103,6 +103,7 @@ exports.update = function (req, res, memberId) {
 		if (data) {
 			
 			if(memberId != req.decoded.memberId && req.decoded.admin != 'Council'){
+				console.log("Member ID: " + memberId + " decodedmemid: " + req.decoded.memberId);
 				httpMsgs.show401(req, res);
 			} else {	
 				var sql = "UPDATE Main SET";
