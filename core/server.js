@@ -116,7 +116,15 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
-			member.update(req, res);
+			var memIdPatt = "[0-9]+";
+			var patt = new RegExp("/members/" + memIdPatt);
+			if (patt.test(req.url)) {
+				patt = new RegExp(memIdPatt);
+				var memberId = patt.exec(req.url);
+				member.update(req, res, memberId);
+			} else {
+				httpMsgs.show404(req, res);
+			}
 		})
 		.delete(function (req, res) {
 			member.delete(req, res);
