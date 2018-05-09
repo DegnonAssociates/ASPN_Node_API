@@ -115,13 +115,78 @@ exports.update = function (req, res) {
 					isDataProvided = true;
 				}
 
+				if(data.middleName) {
+					sql += " Middle_Nam = '" + data.middleName + "',";
+					isDataProvided = true;
+				}
+
 				if(data.lastName) {
 					sql += " Last_Name = '" + data.lastName + "',";
 					isDataProvided = true;
 				}
 
+				if(data.degree) {
+					sql += " Degree = '" + data.degree + "',";
+					isDataProvided = true;
+				}
+
+				if(data.academicTitle) {
+					sql += " academicti = '" + data.academicTitle + "',";
+					isDataProvided = true;
+				}
+
+				if(data.department) {
+					sql += " Department = '" + data.department + "',";
+					isDataProvided = true;
+				}
+
+				if(data.institution) {
+					sql += " org = '" + data.institution + "',";
+					isDataProvided = true;
+				}
+
+				if(data.address) {
+					sql += " address = '" + data.address + "',";
+					isDataProvided = true;
+				}
+
+				if(data.city) {
+					sql += " city = '" + data.city + "',";
+					isDataProvided = true;
+				}
+
+				if(data.state) {
+					sql += " state = '" + data.state + "',";
+					isDataProvided = true;
+				}
+
+				if(data.zip) {
+					sql += " zip = '" + data.zip + "',";
+					isDataProvided = true;
+				}
+
+				if(data.country) {
+					sql += " country = '" + data.country + "',";
+					isDataProvided = true;
+				}
+
+				if(data.busPhone) {
+					sql += " bus_phone = '" + data.bus_phone + "',";
+					isDataProvided = true;
+				}
+
+				if(data.fax) {
+					sql += " fax = '" + data.fax + "',";
+					isDataProvided = true;
+				}
+
 				if(data.email) {
 					sql += " Email = '" + data.email + "',";
+					isDataProvided = true;
+				}
+
+				if(data.nonInstitutionalEmail) {
+					sql += " emai_other = '" + data.nonInstitutionalEmail + "',";
 					isDataProvided = true;
 				}
 
