@@ -95,7 +95,7 @@ exports.add = function (req, res) {
 	}
 };
 
-exports.update = function (req, res) {
+exports.update = function (req, res, memberId) {
 	try {
 		if(!req.body) throw new Error("Input not valid");
 		var data = req.body;
@@ -201,7 +201,7 @@ exports.update = function (req, res) {
 				}
 
 				sql = sql.slice(0, -1); //remove last comma
-				sql += "WHERE [member id] = " + data.memberId;
+				sql += "WHERE [member id] = " + memberId;
 				console.log(sql);
 
 				if(isDataProvided){
