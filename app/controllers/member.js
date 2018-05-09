@@ -101,10 +101,8 @@ exports.update = function (req, res, memberId) {
 		var data = req.body;
 
 		if (data) {
-
-			if(!data.memberId) throw new Error("memberId not provided");
 			
-			if(data.memberId != req.decoded.memberId && req.decoded.admin != 'Council'){
+			if(memberId != req.decoded.memberId && req.decoded.admin != 'Council'){
 				httpMsgs.show401(req, res);
 			} else {	
 				var sql = "UPDATE Main SET";
