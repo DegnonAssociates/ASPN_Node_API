@@ -169,7 +169,7 @@ exports.update = function (req, res, memberId) {
 				}
 
 				if(data.busPhone) {
-					sql += " bus_phone = '" + data.bus_phone + "',";
+					sql += " telephone = '" + data.bus_phone + "',";
 					isDataProvided = true;
 				}
 
