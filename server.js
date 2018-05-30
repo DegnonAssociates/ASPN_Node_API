@@ -10,15 +10,15 @@ var bodyParser        = require('body-parser');
 var expressValidator  = require('express-validator');
 var morgan            = require('morgan');
 var jwt               = require('jsonwebtoken');
-var settings          = require('../settings');
-var db                = require('../core/db');
-var httpMsgs          = require('../core/httpMsgs');
-var member            = require('../app/controllers/member');
-var activity          = require('../app/controllers/activity');
-var activityCode      = require('../app/controllers/activityCode');
-var authn             = require('../app/controllers/authenticate');
-var reset             = require('../app/controllers/reset');
-var committee         = require('../app/controllers/committee');
+var settings          = require('./settings');
+var db                = require('./core/db');
+var httpMsgs          = require('./core/httpMsgs');
+var member            = require('./app/controllers/member');
+var activity          = require('./app/controllers/activity');
+var activityCode      = require('./app/controllers/activityCode');
+var authn             = require('./app/controllers/authenticate');
+var reset             = require('./app/controllers/reset');
+var committee         = require('./app/controllers/committee');
 
 
 // configure app to use bodyParser()
