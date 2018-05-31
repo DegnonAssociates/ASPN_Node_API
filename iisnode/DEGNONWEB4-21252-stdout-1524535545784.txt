@@ -1,7 +1,0 @@
-Started listening at \\.\pipe\78be5445-0c8f-4d26-bf8b-66840317cc3d
-[0mGET /node_api/ [33m404 [0m10.925 ms - 148[0m
-[0mGET /node_api/app [33m404 [0m1.472 ms - 151[0m
-[0mGET /node_api/core [33m404 [0m1.257 ms - 152[0m
-[0mGET /node_api/core/db.js [33m404 [0m1.286 ms - 158[0m
-[0mGET /node_api/app/ [33m404 [0m0.947 ms - 152[0m
-[0mGET /node_api/ [33m404 [0m0.894 ms - 148[0m

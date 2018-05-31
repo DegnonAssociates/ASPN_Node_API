@@ -1,8 +1,0 @@
-Started listening at \\.\pipe\94352e03-a53b-45fd-8187-54f50389633b
-[0mGET /node_api/api/v1 [33m404 [0m13.721 ms - 154[0m
-[0mGET /node_api/api/v1 [33m404 [0m1.427 ms - 154[0m
-[0mGET /node_api/api/v1 [33m404 [0m1.243 ms - 154[0m
-[0mGET /node_api/api/v1 [33m404 [0m1.130 ms - 154[0m
-[0mGET /node_api/api/v1 [33m404 [0m1.122 ms - 154[0m
-[0mGET /node_api/api/v1 [33m404 [0m1.303 ms - 154[0m
-[0mGET /node_api/api/v1 [33m404 [0m1.381 ms - 154[0m

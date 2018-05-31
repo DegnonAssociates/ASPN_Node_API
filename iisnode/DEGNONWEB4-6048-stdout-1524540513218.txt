@@ -1,2 +1,0 @@
-Started listening at \\.\pipe\916423ed-ac7b-49de-b050-5a182993bf67
-[0mGET /node_api/ [33m404 [0m5.241 ms - 148[0m
