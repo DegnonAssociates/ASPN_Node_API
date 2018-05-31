@@ -1,0 +1,3 @@
+Started listening at \\.\pipe\12604ffa-cce8-445b-be1b-4d7a41e7ddb7
+[0mGET /api/v1/members [33m401 [0m5.188 ms - -[0m
+QUERY ERROR: Error: Can't set headers after they are sent.

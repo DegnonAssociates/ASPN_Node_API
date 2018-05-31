@@ -1,0 +1,12 @@
+(node:10264) UnhandledPromiseRejectionWarning: Error: Can't set headers after they are sent.
+    at validateHeader (_http_outgoing.js:491:11)
+    at ServerResponse.setHeader (_http_outgoing.js:498:3)
+    at ServerResponse.setWriteHeadHeaders (E:\www.aspneph.org\www\apps\api\node_modules\on-headers\index.js:82:19)
+    at ServerResponse.writeHead (E:\www.aspneph.org\www\apps\api\node_modules\on-headers\index.js:41:36)
+    at Object.exports.show500 (E:\www.aspneph.org\www\apps\api\core\httpMsgs.js:11:7)
+    at E:\www.aspneph.org\www\apps\api\app\controllers\member.js:43:16
+    at E:\www.aspneph.org\www\apps\api\core\db.js:20:4
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+(node:10264) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
+(node:10264) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.

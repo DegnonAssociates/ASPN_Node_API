@@ -63,10 +63,9 @@ router.get('/committees/:positionCode', function (req, res) {
 	}
 });
 
+// check post, url params, or header for token
+function valToken(req, res) {
 
-router.use(function (req, res, next) { 
-
-	// check post, url params, or header for token
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
 	
 
@@ -79,13 +78,12 @@ router.use(function (req, res, next) {
 			} else {
 				// authn passed, save to request for use in other routes
 				req.decoded = decoded;
-				next();
+
 			}
 		});
 	} else {
 		if( req.headers['authorization'] ){
 			authn.getAuthn(req, res);
-			next();
 		} else {
 			// if no token or auth is passed return an error
 			httpMsgs.show401(req, res);
@@ -93,18 +91,23 @@ router.use(function (req, res, next) {
 		
 	}
 
-	// member GET all POST routes
+}
+// member GET all POST routes
 	router.route('/members')
 		.get(function (req, res) {
+			valToken(req, res);
 			member.getList(req, res);
 		})
 		.post(function (req, res) { 
+			valToken(req, res);
 			member.add(req, res);
 	});
+
 
 	// member GET one PUT DELETE routes
 	router.route('/members/:memberId')
 		.get(function (req, res) { 
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/members/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -116,6 +119,7 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/members/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -127,6 +131,7 @@ router.use(function (req, res, next) {
 			}
 		})
 		.post(function (req, res) {
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/members/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -138,21 +143,25 @@ router.use(function (req, res, next) {
 			}
 		})
 		.delete(function (req, res) {
+			valToken(req, res);
 			member.delete(req, res);
 	});
 
 	// activities GET all POST routes
 	router.route('/activities')
 		.get(function (req, res) {
+			valToken(req, res);
 			activity.getList(req, res);
 		})
 		.post(function (req, res) { 
+			valToken(req, res);
 			activity.add(req, res);
 	});
 
 	// activities GET one PUT DELETE routes
 	router.route('/activities/:memberId')
 		.get(function (req, res) { 
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/activities/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -164,24 +173,29 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
+			valToken(req, res);
 			activity.update(req, res, memberId);
 		})
 		.delete(function (req, res) {
+			valToken(req, res);
 			activity.delete(req, res);
 	});
 
 	// activityCode GET all POST routes
-	router.route('/activityCodes')
+	router.route('/activityCodes')	
 		.get(function (req, res) {
+			valToken(req, res);
 			activityCode.getList(req, res);
 		})
 		.post(function (req, res) { 
+			valToken(req, res);
 			activityCode.add(req, res);
 	});
 
 	// activityCode GET one PUT DELETE routes
 	router.route('/activityCodes/:activityId')
 		.get(function (req, res) { 
+			valToken(req, res);
 			var activityIdPatt = "[0-9]+";
 			var patt = new RegExp("/activityCode/" + activityIdPatt);
 			if (patt.test(req.url)) {
@@ -193,12 +207,16 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
+			valToken(req, res);
 			activityCode.update(req, res);
 		})
 		.delete(function (req, res) {
+			valToken(req, res);
 			activityCode.delete(req, res);
 	});
-});
+
+
+
 
 
 // REGISTER OUR ROUTES -------------------------------

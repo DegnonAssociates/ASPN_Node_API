@@ -1,0 +1,16 @@
+Started listening at \\.\pipe\813895c0-b27c-4737-9483-bcba4d002b71
+router: function route(path) {
+  var route = new Route(path);
+
+  var layer = new Layer(path, {
+    sensitive: this.caseSensitive,
+    strict: this.strict,
+    end: true
+  }, route.dispatch.bind(route));
+
+  layer.route = route;
+
+  this.stack.push(layer);
+  return route;
+}
+[0mGET /api/v1/members [33m404 [0m15.032 ms - 153[0m

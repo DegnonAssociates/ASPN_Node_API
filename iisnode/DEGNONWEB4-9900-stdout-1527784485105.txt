@@ -1,0 +1,2 @@
+Started listening at \\.\pipe\a24a2f21-4bc3-4a98-ac0b-a3b371291863
+[0mGET /api/v1/members/1482 [32m200 [0m345.546 ms - -[0m

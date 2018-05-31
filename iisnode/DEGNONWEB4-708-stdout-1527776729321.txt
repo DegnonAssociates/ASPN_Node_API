@@ -1,2 +1,0 @@
-Started listening at \\.\pipe\1c6d472c-83e9-4de0-940e-ebd29026ea44
-[0mPOST /api/v1/authenticate [32m200 [0m362.287 ms - -[0m
